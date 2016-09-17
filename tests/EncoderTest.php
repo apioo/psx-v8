@@ -65,7 +65,7 @@ class EncoderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(NullValue::class, Encoder::encode(null, $context));
         $this->assertSame(null, Encoder::encode(null, $context)->Value());
         $this->assertInstanceOf(DateObject::class, Encoder::encode(new \DateTime('2016-09-17T00:00:00'), $context));
-        $this->assertSame(null, Encoder::encode(new \DateTime('2016-09-17T00:00:00'), $context)->ValueOf());
+        $this->assertSame(1474070400000.0, Encoder::encode(new \DateTime('2016-09-17T00:00:00'), $context)->ValueOf());
         $this->assertInstanceOf(FunctionObject::class, Encoder::encode(function() {}, $context));
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode((object) ['foo' => 'bar'], $context));
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode(['foo' => 'bar'], $context));
