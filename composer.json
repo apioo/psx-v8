@@ -1,6 +1,6 @@
 {
   "name": "psx/v8",
-  "description": "Helper methods for the php-v8 extension",
+  "description": "Helper library for the php-v8 extension",
   "keywords": ["v8"],
   "homepage": "http://phpsx.org",
   "license": "Apache-2.0",
