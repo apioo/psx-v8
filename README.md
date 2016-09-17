@@ -19,7 +19,6 @@ var message = 'Hello ' + console.foo;
 resp = {
     message: console.log(message),
     bar: function(data){
-        this.test = 'bar';
         return 'Foo ' + data;
     },
     foo: 'bar'
@@ -41,9 +40,7 @@ $environment->run($script);
 $resp = $environment->get('resp');
 
 echo $resp->get('message') . "\n"; // Hello foo and bar
-echo $resp->get('bar')('test') . "\n"; // Foo test
+echo $resp->get('bar')(['test']) . "\n"; // Foo test
 echo $resp->get('foo') . "\n"; // bar
-
-var_dump($resp->toNative());
 
 ```
