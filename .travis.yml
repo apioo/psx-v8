@@ -9,8 +9,7 @@ before_install:
   - sudo apt-get update -y
   - sudo apt-get install -y libv8-5.4-dev
   - php -r "echo ini_get('extension_dir');"
-  - php -r "var_dump(scandir('/home/travis/.phpenv/versions/7.0.7/lib/php/extensions'));"
-  - php -r "var_dump(scandir('/home/travis/.phpenv/versions/7.0.7/lib/php/extensions/no-debug-zts-20151012'));"
+  - dpkg-query -L libv8-5.4-dev
   - cp /usr/lib/php/20151012/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20151012/v8.so
   - echo "extension=v8.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 install:
