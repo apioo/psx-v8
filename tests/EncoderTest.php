@@ -20,7 +20,6 @@
 
 namespace PSX\V8\Tests;
 
-use PSX\V8\Decoder;
 use PSX\V8\Encoder;
 use V8\ArrayObject;
 use V8\BooleanValue;
@@ -43,6 +42,13 @@ use V8\StringValue;
  */
 class EncoderTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        if (!class_exists('V8\Context')) {
+            $this->markTestSkipped('V8 extension not installed');
+        }
+    }
+
     public function testEncode()
     {
         $isolate = new Isolate();

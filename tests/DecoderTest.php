@@ -20,15 +20,6 @@
 
 namespace PSX\V8\Tests;
 
-use PSX\V8\Decoder;
-use PSX\V8\Encoder;
-use V8\Context;
-use V8\FunctionObject;
-use V8\Isolate;
-use V8\Script;
-use V8\ScriptOrigin;
-use V8\StringValue;
-
 /**
  * DecoderTest
  *
@@ -38,6 +29,13 @@ use V8\StringValue;
  */
 class DecoderTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        if (!class_exists('V8\Context')) {
+            $this->markTestSkipped('V8 extension not installed');
+        }
+    }
+
     public function testDecode()
     {
         // @TODO implement

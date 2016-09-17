@@ -18,14 +18,9 @@
  * limitations under the License.
  */
 
-namespace PSX\V8;
+namespace PSX\V8\Tests;
 
-use PSX\V8\Wrapper\ObjectWrapper;
-use V8\Context;
-use V8\Isolate;
-use V8\Script;
-use V8\ScriptOrigin;
-use V8\StringValue;
+use PSX\V8\Environment;
 
 /**
  * EnvironmentTest
@@ -36,8 +31,36 @@ use V8\StringValue;
  */
 class EnvironmentTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        if (!class_exists('V8\Context')) {
+            $this->markTestSkipped('V8 extension not installed');
+        }
+    }
+
     public function testRun()
     {
-        // @TODO implement
+        $script = <<<JS
+
+var message = md5('foobar');
+
+resp = console.log(message);
+
+JS;
+
+        
+        $env = new Environment();
+        $env->set('md5', function($value){
+            return md5($value);
+        });
+        $env->set('console', [
+            'log' => function($message){
+                return $message;
+            }
+        ]);
+
+        $env->run($script);
+
+        $this->assertEquals(md5('foobar'), $env->get('resp'));
     }
 }
