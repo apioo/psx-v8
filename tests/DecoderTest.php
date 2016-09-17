@@ -63,14 +63,14 @@ class DecoderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(12, Decoder::decode(new IntegerValue($isolate, 12), $context));
         $this->assertSame(null, Decoder::decode(new NullValue($isolate), $context));
         $this->assertInstanceOf(\DateTime::class, Decoder::decode(new DateObject($context, 1474070400000.0), $context));
-        $this->assertInstanceOf('2016-09-17T00:00:00', Decoder::decode(new DateObject($context, 1474070400000.0), $context)->format('Y-m-dTH:i:s'));
+        $this->assertSame('2016-09-17T00:00:00', Decoder::decode(new DateObject($context, 1474070400000.0), $context)->format('Y-m-d\TH:i:s'));
         $this->assertSame(false, Decoder::decode(new BooleanObject($context, false), $context));
         $this->assertSame('bar', Decoder::decode(new StringObject($context, new StringValue($isolate, 'bar')), $context));
         $this->assertSame(12.34, Decoder::decode(new NumberObject($context, 12.34), $context));
-        $this->assertSame(12, Decoder::decode(new NumberObject($context, 12), $context));
+        $this->assertSame(12.0, Decoder::decode(new NumberObject($context, 12), $context));
         $this->assertSame('[A-z]', Decoder::decode(new RegExpObject($context, new StringValue($isolate, '[A-z]')), $context));
         $this->assertSame(['foo', 'bar'], Decoder::decode($this->getArray($context), $context));
-        $this->assertSame((object) ['foo' => 'bar'], Decoder::decode($this->getObject($context), $context));
+        $this->assertEquals((object) ['foo' => 'bar'], Decoder::decode($this->getObject($context), $context));
     }
 
     protected function getArray(Context $context)

@@ -65,7 +65,7 @@ class Decoder
         } elseif ($value instanceof BooleanObject) {
             return $value->ValueOf();
         } elseif ($value instanceof StringObject) {
-            return $value->ValueOf();
+            return $value->ValueOf()->Value();
         } elseif ($value instanceof NumberObject) {
             return $value->ValueOf();
         } elseif ($value instanceof RegExpObject) {
