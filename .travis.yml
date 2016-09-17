@@ -10,6 +10,7 @@ before_install:
   - sudo apt-get install -y libv8-5.4-dev
   - git clone https://github.com/pinepain/php-v8.git
   - cd php-v8 && phpize && ./configure && make
+  - cp /home/travis/build/apioo/psx-v8/php-v8/modules/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20151012/v8.so
   - echo "extension=v8.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 install:
   - composer install
