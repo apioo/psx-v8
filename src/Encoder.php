@@ -76,7 +76,7 @@ class Encoder
 
                 $info->GetReturnValue()->Set(self::encode($return, $info->GetContext()));
             });
-        } elseif ($value instanceof \stdClass || self::isAssoc($value)) {
+        } elseif ($value instanceof \stdClass || (is_array($value) && self::isAssoc($value))) {
             $object = new ObjectValue($context);
             foreach ($value as $key => $val) {
                 $object->Set(
