@@ -47,7 +47,7 @@ class Bar implements ObjectInterface
     {
         return [
             'bar' => $this->bar,
-            'doBar' => [$this, 'doFoo'],
+            'doBar' => [$this, 'doBar'],
         ];
     }
 }
