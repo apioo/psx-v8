@@ -44,3 +44,42 @@ echo $resp->get('bar')(['test']) . "\n"; // Foo test
 echo $resp->get('foo') . "\n"; // bar
 
 ```
+
+### Objects
+
+It is also possible to expose complete PHP classes to the V8 engine. Therefor
+the class has to implement the `PSX\V8\ObjectInterface` interface. There is also 
+a `PSX\V8\ReflectionObject` object which automatically exposes all public 
+properties and methods. The javascript defined above would also work with the 
+following environment:
+
+```php
+<?php
+
+class Console
+{
+    public $foo;
+    
+    public function __construct()
+    {
+        $this->foo = 'foo';
+    }
+    
+    public function log($value)
+    {
+        return $value . ' and bar';
+    }
+}
+
+$console = new Console();
+
+$environment = new \PSX\V8\Environment();
+$environment->set('console', new \PSX\V8\ReflectionObject($console));
+$environment->run($script);
+
+$resp = $environment->get('resp');
+
+```
+
+
+[![Build Status](https://travis-ci.org/apioo/psx-v8.png)](https://travis-ci.org/apioo/psx-v8)
