@@ -74,7 +74,7 @@ class Console
 $console = new Console();
 
 $environment = new \PSX\V8\Environment();
-$environment->set('console', new \PSX\V8\ReflectionObject($console));
+$environment->set('console', new \PSX\V8\Object\ReflectionObject($console));
 $environment->run($script);
 
 $resp = $environment->get('resp');
