@@ -21,6 +21,8 @@
 namespace PSX\V8\Tests;
 
 use PSX\V8\Environment;
+use PSX\V8\Object\ReflectionObject;
+use PSX\V8\Tests\Object\Foo;
 
 /**
  * EnvironmentTest
@@ -48,7 +50,6 @@ resp = console.log(message);
 
 JS;
 
-        
         $env = new Environment();
         $env->set('md5', function($value){
             return md5($value);
@@ -62,5 +63,23 @@ JS;
         $env->run($script);
 
         $this->assertEquals(md5('foobar'), $env->get('resp'));
+    }
+
+    public function testRunObject()
+    {
+        $script = <<<JS
+
+var message = console.foo;
+
+resp = console.doFoo(message);
+
+JS;
+
+        $env = new Environment();
+        $env->set('console', new ReflectionObject(new Foo()));
+
+        $env->run($script);
+
+        $this->assertEquals('foo: foo', $env->get('resp'));
     }
 }

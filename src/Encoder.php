@@ -64,7 +64,9 @@ class Encoder
             return new NullValue($context->GetIsolate());
         } elseif ($value instanceof \DateTime) {
             return new DateObject($context, $value->getTimestamp() * 1000);
-        } elseif ($value instanceof \Closure) {
+        } elseif ($value instanceof ObjectInterface) {
+            return self::encode($value->getProperties(), $context);
+        } elseif ($value instanceof \Closure || is_callable($value)) {
             return new FunctionObject($context, function(FunctionCallbackInfo $info) use ($value){
                 $args   = $info->Arguments();
                 $params = [];
@@ -105,7 +107,7 @@ class Encoder
      * @param array $array
      * @return boolean
      */
-    public static function isAssoc(array $array)
+    protected static function isAssoc(array $array)
     {
         if (empty($array)) {
             return false;

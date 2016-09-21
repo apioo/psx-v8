@@ -21,6 +21,7 @@
 namespace PSX\V8\Tests;
 
 use PSX\V8\Encoder;
+use PSX\V8\Tests\Object\Bar;
 use V8\ArrayObject;
 use V8\BooleanValue;
 use V8\Context;
@@ -66,9 +67,27 @@ class EncoderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(null, Encoder::encode(null, $context)->Value());
         $this->assertInstanceOf(DateObject::class, Encoder::encode(new \DateTime('2016-09-17T00:00:00'), $context));
         $this->assertSame(1474070400000.0, Encoder::encode(new \DateTime('2016-09-17T00:00:00'), $context)->ValueOf());
+        $this->assertInstanceOf(ObjectValue::class, Encoder::encode(new Bar(), $context));
         $this->assertInstanceOf(FunctionObject::class, Encoder::encode(function() {}, $context));
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode((object) ['foo' => 'bar'], $context));
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode(['foo' => 'bar'], $context));
         $this->assertInstanceOf(ArrayObject::class, Encoder::encode(['foo'], $context));
+    }
+    
+    public function testEncodeObject()
+    {
+        $isolate = new Isolate();
+        $context = new Context($isolate);
+
+        /** @var ObjectValue $object */
+        $object = Encoder::encode(new Bar(), $context);
+
+        $this->assertInstanceOf(ObjectValue::class, $object);
+
+        $property = $object->Get($context, Encoder::encode('bar', $context));
+        $this->assertInstanceOf(StringValue::class, $property);
+
+        $method = $object->Get($context, Encoder::encode('doBar', $context));
+        $this->assertInstanceOf(FunctionObject::class, $method);
     }
 }
