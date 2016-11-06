@@ -88,7 +88,7 @@ class Encoder
                 );
             }
             return $object;
-        } elseif (is_array($value)) {
+        } elseif (is_array($value) || $value instanceof \Traversable) {
             $array = new ArrayObject($context);
             $index = 0;
             foreach ($value as $val) {
