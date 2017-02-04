@@ -1,4 +1,8 @@
 
+### 0.1.3
+
+* Handle ArrayObject and JsonSerializable
+
 ### 0.1.2
 
 * Accept also traversable as array
