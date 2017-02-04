@@ -78,6 +78,12 @@ class Encoder
 
                 $info->GetReturnValue()->Set(self::encode($return, $info->GetContext()));
             });
+        } elseif ($value instanceof \ArrayObject) {
+            return self::encode($value->getArrayCopy(), $context);
+        } elseif ($value instanceof \Traversable) {
+            return self::encode(iterator_to_array($value), $context);
+        } elseif ($value instanceof \JsonSerializable) {
+            return self::encode($value->jsonSerialize(), $context);
         } elseif ($value instanceof \stdClass || (is_array($value) && self::isAssoc($value))) {
             $object = new ObjectValue($context);
             foreach ($value as $key => $val) {
@@ -88,7 +94,7 @@ class Encoder
                 );
             }
             return $object;
-        } elseif (is_array($value) || $value instanceof \Traversable) {
+        } elseif (is_array($value)) {
             $array = new ArrayObject($context);
             $index = 0;
             foreach ($value as $val) {
