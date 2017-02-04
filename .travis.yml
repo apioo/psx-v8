@@ -13,7 +13,8 @@ before_install:
   - git clone https://github.com/pinepain/php-v8.git
   - cd php-v8
   - phpize && ./configure && make
-  - cp modules/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20151012/v8.so
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; cp modules/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20151012/v8.so; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; cp modules/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20160303/v8.so; fi;
   - cd ..
   - echo "extension=v8.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 install:

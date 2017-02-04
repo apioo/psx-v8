@@ -21,6 +21,8 @@
 namespace PSX\V8\Tests;
 
 use PSX\V8\Encoder;
+use PSX\V8\Tests\Data\Json;
+use PSX\V8\Tests\Data\Traversable;
 use PSX\V8\Tests\Object\Bar;
 use V8\ArrayObject;
 use V8\BooleanValue;
@@ -69,11 +71,18 @@ class EncoderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1474070400000.0, Encoder::encode(new \DateTime('2016-09-17T00:00:00'), $context)->ValueOf());
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode(new Bar(), $context));
         $this->assertInstanceOf(FunctionObject::class, Encoder::encode(function() {}, $context));
+        $this->assertInstanceOf(ObjectValue::class, Encoder::encode(new \ArrayObject(['foo' => 'bar']), $context));
+        $this->assertInstanceOf(ArrayObject::class, Encoder::encode(new \ArrayObject(['foo', 'bar']), $context));
+        $this->assertInstanceOf(ObjectValue::class, Encoder::encode(new Traversable(['foo' => 'bar']), $context));
+        $this->assertInstanceOf(ArrayObject::class, Encoder::encode(new Traversable(['foo', 'bar']), $context));
+        $this->assertInstanceOf(ObjectValue::class, Encoder::encode(new Json(['foo' => 'bar']), $context));
+        $this->assertInstanceOf(ArrayObject::class, Encoder::encode(new Json(['foo', 'bar']), $context));
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode((object) ['foo' => 'bar'], $context));
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode(['foo' => 'bar'], $context));
-        $this->assertInstanceOf(ArrayObject::class, Encoder::encode(['foo'], $context));
+        $this->assertInstanceOf(ArrayObject::class, Encoder::encode(['foo', 'bar'], $context));
+        $this->assertInstanceOf(ArrayObject::class, Encoder::encode([], $context));
     }
-    
+
     public function testEncodeObject()
     {
         $isolate = new Isolate();
