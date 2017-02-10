@@ -75,7 +75,7 @@ class Decoder
         } elseif ($value instanceof ArrayObject) {
             $result = [];
             for ($i = 0; $i < $value->Length(); $i++) {
-                $result[] = self::decode($value->GetIndex($context, $i), $context);
+                $result[] = self::decode($value->Get($context, new IntegerValue($context->GetIsolate(), $i)), $context);
             }
             return $result;
         } elseif ($value instanceof ObjectValue) {
@@ -83,7 +83,7 @@ class Decoder
             $result = new \stdClass();
 
             for ($i = 0; $i < $names->Length(); $i++) {
-                $name = $names->GetIndex($context, $i);
+                $name = $names->Get($context, new IntegerValue($context->GetIsolate(), $i));
                 if ($name instanceof StringValue) {
                     $key = $name->Value();
                     $val = $value->Get($context, $name);

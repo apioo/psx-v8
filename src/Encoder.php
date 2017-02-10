@@ -98,7 +98,11 @@ class Encoder
             $array = new ArrayObject($context);
             $index = 0;
             foreach ($value as $val) {
-                $array->SetIndex($context, $index, self::encode($val, $context));
+                $array->Set(
+                    $context,
+                    self::encode($index, $context),
+                    self::encode($val, $context)
+                );
                 $index++;
             }
             return $array;
