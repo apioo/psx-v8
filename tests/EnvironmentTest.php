@@ -82,4 +82,42 @@ JS;
 
         $this->assertEquals('foo: foo', $env->get('resp'));
     }
+
+    /**
+     * @dataProvider providerDataTypes
+     */
+    public function testDataTypes($js, $php, $type, \Closure $transformer = null)
+    {
+        $env = new Environment();
+        $env->run('data = ' . $js . ';');
+
+        $data = $env->get('data');
+
+        $this->assertInternalType($type, $data);
+
+        if ($transformer !== null) {
+            $data = $transformer($data);
+        }
+
+        $this->assertSame($php, $data);
+    }
+
+    public function providerDataTypes()
+    {
+        return [
+            ['true', true, 'boolean'],
+            ['null', null, 'NULL'],
+            ['12', 12, 'integer'],
+            ['12.34', 12.34, 'float'],
+            ['"foo"', 'foo', 'string'],
+            ['new Boolean(false)', false, 'boolean'],
+            ['new String("foo")', 'foo', 'string'],
+            ['new Number(12)', 12, 'integer'],
+            ['new Number(12.34)', 12.34, 'float'],
+            ['new Date(2017, 2, 9)', '2017-02-09', 'object', function(\DateTime $date) { return $date->format('Y-m-d'); } ],
+            ['/^[A-z]+$/', '/^[A-z]+$/', 'string'],
+            ['["foo", "bar"]', ['foo', 'bar'], 'array'],
+            ['{foo: "bar"}', (object) ['foo' => 'bar'], 'object'],
+        ];
+    }
 }
