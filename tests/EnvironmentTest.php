@@ -118,9 +118,38 @@ JS;
         $env = new Environment();
         $env->run($script);
 
+        $data = $env->get('resp')->toNative();
+        $data->entry[1]->object_date = $data->entry[1]->object_date->format('Y-m-d');
+
         $actual = json_encode($env->get('resp')->toNative(), JSON_PRETTY_PRINT);
         $expect = <<<JSON
-{}
+{
+    "totalResults": 10,
+    "entry": [
+        {
+            "value_boolean": true,
+            "value_null": null,
+            "value_integer": 12,
+            "value_float": 12.34,
+            "value_string": "foo"
+        },
+        {
+            "object_boolean": false,
+            "object_string": "foo",
+            "object_integer": 12,
+            "object_float": 12.34,
+            "object_regexp": "^[A-z]+$",
+            "object_date": "2017-02-09",
+            "object_array": [
+                "foo",
+                "bar"
+            ],
+            "object_object": {
+                "foo": "bar"
+            }
+        }
+    ]
+}
 JSON;
 
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
