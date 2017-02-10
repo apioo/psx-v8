@@ -25,6 +25,7 @@ use V8\BooleanObject;
 use V8\BooleanValue;
 use V8\Context;
 use V8\DateObject;
+use V8\IntegerValue;
 use V8\NullValue;
 use V8\NumberObject;
 use V8\NumberValue;
@@ -57,7 +58,8 @@ class Decoder
         } elseif ($value instanceof StringValue) {
             return $value->Value();
         } elseif ($value instanceof NumberValue) {
-            return $value->Value();
+            $val = $value->Value();
+            return strpos($val, '.') === false ? intval($val) : $val;
         } elseif ($value instanceof NullValue) {
             return null;
         } elseif ($value instanceof DateObject) {
