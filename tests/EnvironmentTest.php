@@ -121,7 +121,7 @@ JS;
         $data = $env->get('resp')->toNative();
         $data->entry[1]->object_date = $data->entry[1]->object_date->format('Y-m-d');
 
-        $actual = json_encode($env->get('resp')->toNative(), JSON_PRETTY_PRINT);
+        $actual = json_encode($data, JSON_PRETTY_PRINT);
         $expect = <<<JSON
 {
     "totalResults": 10,
