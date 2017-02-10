@@ -118,7 +118,7 @@ JS;
         $env = new Environment();
         $env->run($script);
 
-        $actual = $env->get('resp');
+        $actual = json_encode($env->get('resp')->toNative(), JSON_PRETTY_PRINT);
         $expect = <<<JSON
 {}
 JSON;
