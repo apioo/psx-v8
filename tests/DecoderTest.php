@@ -76,8 +76,8 @@ class DecoderTest extends \PHPUnit_Framework_TestCase
     protected function getArray(Context $context)
     {
         $result = new ArrayObject($context);
-        $result->SetIndex($context, 0, new StringValue($context->GetIsolate(), 'foo'));
-        $result->SetIndex($context, 1, new StringValue($context->GetIsolate(), 'bar'));
+        $result->Set($context, new IntegerValue($context->GetIsolate(), 0), new StringValue($context->GetIsolate(), 'foo'));
+        $result->Set($context, new IntegerValue($context->GetIsolate(), 1), new StringValue($context->GetIsolate(), 'bar'));
 
         return $result;
     }
