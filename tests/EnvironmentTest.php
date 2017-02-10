@@ -23,6 +23,8 @@ namespace PSX\V8\Tests;
 use PSX\V8\Environment;
 use PSX\V8\Object\ReflectionObject;
 use PSX\V8\Tests\Object\Foo;
+use PSX\V8\Wrapper\ArrayWrapper;
+use PSX\V8\Wrapper\ObjectWrapper;
 
 /**
  * EnvironmentTest
@@ -114,10 +116,10 @@ JS;
             ['new String("foo")', 'foo', 'string'],
             ['new Number(12)', 12, 'integer'],
             ['new Number(12.34)', 12.34, 'float'],
-            ['new Date(2017, 2, 9)', '2017-02-09', 'object', function(\DateTime $date) { return $date->format('Y-m-d'); } ],
-            ['/^[A-z]+$/', '/^[A-z]+$/', 'string'],
-            ['["foo", "bar"]', ['foo', 'bar'], 'array'],
-            ['{foo: "bar"}', (object) ['foo' => 'bar'], 'object'],
+            ['new Date(2017, 1, 9)', '2017-02-09', 'object', function(\DateTime $data) { return $data->format('Y-m-d'); } ],
+            ['/^[A-z]+$/', '^[A-z]+$', 'string'],
+            ['["foo", "bar"]', ['foo', 'bar'], 'array', function(ArrayWrapper $data) { return $data->toNative(); } ],
+            ['{foo: "bar"}', (object) ['foo' => 'bar'], 'object', function(ObjectWrapper $data) { return $data->toNative(); } ],
         ];
     }
 }
