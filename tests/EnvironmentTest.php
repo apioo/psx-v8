@@ -97,7 +97,8 @@ function buildResponse() {
       value_null: null,
       value_integer: 12,
       value_float: 12.34,
-      value_string: "foo",
+      value_string: "foo"
+    },{
       object_boolean: new Boolean(false),
       object_string: new String("foo"),
       object_integer: new Number(12),
