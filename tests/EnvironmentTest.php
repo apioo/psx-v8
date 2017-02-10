@@ -85,6 +85,46 @@ JS;
         $this->assertEquals('foo: foo', $env->get('resp'));
     }
 
+    public function testJsonResponse()
+    {
+        $script = <<<JS
+
+function buildResponse() {
+  return {
+    totalResults: 10,
+    entry: [{
+      value_boolean: true,
+      value_null: null,
+      value_integer: 12,
+      value_float: 12.34,
+      value_string: "foo",
+      object_boolean: new Boolean(false),
+      object_string: new String("foo"),
+      object_integer: new Number(12),
+      object_float: new Number(12.34),
+      object_regexp: /^[A-z]+$/,
+      object_date: new Date(2017, 1, 9),
+      object_array: ["foo", "bar"],
+      object_object: {foo: "bar"}
+    }]
+  };
+}
+
+resp = buildResponse();
+
+JS;
+
+        $env = new Environment();
+        $env->run($script);
+
+        $actual = $env->get('resp');
+        $expect = <<<JSON
+{}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
     /**
      * @dataProvider providerPrimitiveTypes
      */
