@@ -86,9 +86,9 @@ JS;
     }
 
     /**
-     * @dataProvider providerDataTypes
+     * @dataProvider providerPrimitiveTypes
      */
-    public function testDataTypes($js, $php, $type, \Closure $transformer = null)
+    public function testPrimitiveTypes($js, $php, $type)
     {
         $env = new Environment();
         $env->run('data = ' . $js . ';');
@@ -96,15 +96,10 @@ JS;
         $data = $env->get('data');
 
         $this->assertInternalType($type, $data);
-
-        if ($transformer !== null) {
-            $data = $transformer($data);
-        }
-
         $this->assertSame($php, $data);
     }
 
-    public function providerDataTypes()
+    public function providerPrimitiveTypes()
     {
         return [
             ['true', true, 'boolean'],
@@ -116,10 +111,30 @@ JS;
             ['new String("foo")', 'foo', 'string'],
             ['new Number(12)', 12, 'integer'],
             ['new Number(12.34)', 12.34, 'float'],
-            ['new Date(2017, 1, 9)', '2017-02-09', 'object', function(\DateTime $data) { return $data->format('Y-m-d'); } ],
             ['/^[A-z]+$/', '^[A-z]+$', 'string'],
-            ['["foo", "bar"]', ['foo', 'bar'], 'array', function(ArrayWrapper $data) { return $data->toNative(); } ],
-            ['{foo: "bar"}', (object) ['foo' => 'bar'], 'object', function(ObjectWrapper $data) { return $data->toNative(); } ],
+        ];
+    }
+
+    /**
+     * @dataProvider providerObjectTypes
+     */
+    public function testObjectTypes($js, $php, $type, \Closure $transformer)
+    {
+        $env = new Environment();
+        $env->run('data = ' . $js . ';');
+
+        $data = $env->get('data');
+
+        $this->assertInstanceOf($type, $data);
+        $this->assertEquals($php, $transformer($data));
+    }
+
+    public function providerObjectTypes()
+    {
+        return [
+            ['new Date(2017, 1, 9)', '2017-02-09', \DateTime::class, function(\DateTime $data) { return $data->format('Y-m-d'); } ],
+            ['["foo", "bar"]', ['foo', 'bar'], ArrayWrapper::class, function(ArrayWrapper $data) { return $data->toNative(); } ],
+            ['{foo: "bar"}', (object) ['foo' => 'bar'], ObjectWrapper::class, function(ObjectWrapper $data) { return $data->toNative(); } ],
         ];
     }
 }
