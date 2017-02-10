@@ -96,7 +96,8 @@ class ValueWrapper
         } elseif ($value instanceof StringObject) {
             return $value->ValueOf()->Value();
         } elseif ($value instanceof NumberObject) {
-            return $value->ValueOf();
+            $val = $value->ValueOf();
+            return strpos($val, '.') === false ? intval($val) : $val;
         } elseif ($value instanceof RegExpObject) {
             return $value->GetSource()->Value();
         } elseif ($value instanceof ObjectValue) {
