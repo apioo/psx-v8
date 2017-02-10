@@ -106,7 +106,7 @@ JS;
     {
         return [
             ['true', true, 'boolean'],
-            ['null', null, 'NULL'],
+            ['null', null, 'null'],
             ['12', 12, 'integer'],
             ['12.34', 12.34, 'float'],
             ['"foo"', 'foo', 'string'],

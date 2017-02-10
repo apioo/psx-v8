@@ -22,9 +22,14 @@ namespace PSX\V8\Wrapper;
 
 use PSX\V8\Decoder;
 use V8\ArrayObject;
+use V8\BooleanObject;
 use V8\Context;
+use V8\DateObject;
 use V8\FunctionObject;
+use V8\NumberObject;
 use V8\ObjectValue;
+use V8\RegExpObject;
+use V8\StringObject;
 use V8\Value;
 
 /**
@@ -84,6 +89,16 @@ class ValueWrapper
             return new ArrayWrapper($this->context, $value);
         } elseif ($value instanceof FunctionObject) {
             return new FunctionWrapper($this->context, $value);
+        } elseif ($value instanceof DateObject) {
+            return new \DateTime('@' . intval($value->ValueOf() / 1000));
+        } elseif ($value instanceof BooleanObject) {
+            return $value->ValueOf();
+        } elseif ($value instanceof StringObject) {
+            return $value->ValueOf()->Value();
+        } elseif ($value instanceof NumberObject) {
+            return $value->ValueOf();
+        } elseif ($value instanceof RegExpObject) {
+            return $value->GetSource()->Value();
         } elseif ($value instanceof ObjectValue) {
             return new ObjectWrapper($this->context, $value);
         } else {
