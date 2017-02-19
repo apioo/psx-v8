@@ -85,7 +85,7 @@ class EncoderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ArrayObject::class, Encoder::encode([], $context));
         $this->assertInstanceOf(StringValue::class, Encoder::encode(new ToString(), $context));
         $this->assertSame('foo', Encoder::encode(new ToString(), $context)->Value());
-        $this->assertSame(null, Encoder::encode(new Popo(), $context));
+        $this->assertInstanceOf(NullValue::class, Encoder::encode(new Popo(), $context));
     }
 
     public function testEncodeObject()

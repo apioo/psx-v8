@@ -234,7 +234,7 @@ JS;
 
         $callback = $env->get('callback');
         $return   = $callback([$data]);
-        $actual   = json_encode($return, JSON_PRETTY_PRINT);
+        $actual   = json_encode($return->toNative(), JSON_PRETTY_PRINT);
 
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
