@@ -106,6 +106,8 @@ class Encoder
                 $index++;
             }
             return $array;
+        } elseif (is_object($value) && method_exists($value, '__toString')) {
+            return new StringValue($context->GetIsolate(), $value->__toString());
         } else {
             return new NullValue($context->GetIsolate());
         }

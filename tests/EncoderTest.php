@@ -22,6 +22,8 @@ namespace PSX\V8\Tests;
 
 use PSX\V8\Encoder;
 use PSX\V8\Tests\Data\Json;
+use PSX\V8\Tests\Data\Popo;
+use PSX\V8\Tests\Data\ToString;
 use PSX\V8\Tests\Data\Traversable;
 use PSX\V8\Tests\Object\Bar;
 use V8\ArrayObject;
@@ -81,6 +83,9 @@ class EncoderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ObjectValue::class, Encoder::encode(['foo' => 'bar'], $context));
         $this->assertInstanceOf(ArrayObject::class, Encoder::encode(['foo', 'bar'], $context));
         $this->assertInstanceOf(ArrayObject::class, Encoder::encode([], $context));
+        $this->assertInstanceOf(StringValue::class, Encoder::encode(new ToString(), $context));
+        $this->assertSame('foo', Encoder::encode(new ToString(), $context)->Value());
+        $this->assertSame(null, Encoder::encode(new Popo(), $context));
     }
 
     public function testEncodeObject()

@@ -22,6 +22,10 @@ namespace PSX\V8\Tests;
 
 use PSX\V8\Environment;
 use PSX\V8\Object\ReflectionObject;
+use PSX\V8\Tests\Data\Json;
+use PSX\V8\Tests\Data\Popo;
+use PSX\V8\Tests\Data\ToString;
+use PSX\V8\Tests\Data\Traversable;
 use PSX\V8\Tests\Object\Foo;
 use PSX\V8\Wrapper\ArrayWrapper;
 use PSX\V8\Wrapper\ObjectWrapper;
@@ -119,6 +123,8 @@ JS;
         $env->run($script);
 
         $data = $env->get('resp')->toNative();
+
+        $this->assertInstanceOf(\DateTime::class, $data->entry[1]->object_date);
         $data->entry[1]->object_date = $data->entry[1]->object_date->format('Y-m-d');
 
         $actual = json_encode($data, JSON_PRETTY_PRINT);
@@ -205,6 +211,54 @@ JSON;
             ['new Date(2017, 1, 9)', '2017-02-09', \DateTime::class, function(\DateTime $data) { return $data->format('Y-m-d'); } ],
             ['["foo", "bar"]', ['foo', 'bar'], ArrayWrapper::class, function(ArrayWrapper $data) { return $data->toNative(); } ],
             ['{foo: "bar"}', (object) ['foo' => 'bar'], ObjectWrapper::class, function(ObjectWrapper $data) { return $data->toNative(); } ],
+        ];
+    }
+
+    /**
+     * @dataProvider providerFunctionParameter
+     */
+    public function testFunctionParameter($data, $expect)
+    {
+        $script = <<<JS
+
+function buildResponse(value) {
+  return value;
+}
+
+callback = buildResponse;
+
+JS;
+
+        $env = new Environment();
+        $env->run($script);
+
+        $callback = $env->get('callback');
+        $return   = $callback($data);
+        $actual   = json_encode($return, JSON_PRETTY_PRINT);
+
+        $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
+    }
+
+    public function providerFunctionParameter()
+    {
+        return [
+            [true, 'true'],
+            [null, 'null'],
+            [12, '12'],
+            [12.34, '12.34'],
+            ['foo', '"foo"'],
+            [['foo' => 'bar'], '{"foo": "bar"}'],
+            [(object) ['foo' => 'bar'], '{"foo": "bar"}'],
+            [['foo', 'bar'], '["foo", "bar"]'],
+            [new \ArrayObject(['foo' => 'bar']), '{"foo": "bar"}'],
+            [new \ArrayObject(['foo', 'bar']), '["foo", "bar"]'],
+            [new Traversable(['foo' => 'bar']), '{"foo": "bar"}'],
+            [new Traversable(['foo', 'bar']), '["foo", "bar"]'],
+            [new Json(['foo' => 'bar']), '{"foo": "bar"}'],
+            [new Json(['foo', 'bar']), '["foo", "bar"]'],
+            [new Popo(), 'null'],
+            [new ToString(), '"foo"'],
+            [new \DateTime('2017-02-19T22:07:00'), '"2017-02-19T22:07:00+00:00"'],
         ];
     }
 }
