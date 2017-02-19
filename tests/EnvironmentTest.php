@@ -29,6 +29,7 @@ use PSX\V8\Tests\Data\Traversable;
 use PSX\V8\Tests\Object\Foo;
 use PSX\V8\Wrapper\ArrayWrapper;
 use PSX\V8\Wrapper\ObjectWrapper;
+use PSX\V8\Wrapper\ValueWrapper;
 
 /**
  * EnvironmentTest
@@ -234,7 +235,12 @@ JS;
 
         $callback = $env->get('callback');
         $return   = $callback([$data]);
-        $actual   = json_encode($return->toNative(), JSON_PRETTY_PRINT);
+
+        if ($return instanceof ValueWrapper) {
+            $actual = json_encode($return->toNative(), JSON_PRETTY_PRINT);
+        } else {
+            $actual = json_encode($return, JSON_PRETTY_PRINT);
+        }
 
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
