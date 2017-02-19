@@ -233,7 +233,7 @@ JS;
         $env->run($script);
 
         $callback = $env->get('callback');
-        $return   = $callback($data);
+        $return   = $callback([$data]);
         $actual   = json_encode($return, JSON_PRETTY_PRINT);
 
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
