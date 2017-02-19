@@ -239,6 +239,9 @@ JS;
         if ($return instanceof ValueWrapper) {
             $actual = json_encode($return->toNative(), JSON_PRETTY_PRINT);
         } else {
+            if ($return instanceof \DateTime) {
+                $return = $return->format('Y-m-d');
+            }
             $actual = json_encode($return, JSON_PRETTY_PRINT);
         }
 
@@ -264,7 +267,7 @@ JS;
             [new Json(['foo', 'bar']), '["foo", "bar"]'],
             [new Popo(), 'null'],
             [new ToString(), '"foo"'],
-            [new \DateTime('2017-02-19T22:07:00'), '"2017-02-19T22:07:00+00:00"'],
+            [new \DateTime('2017-02-19T22:07:00'), '"2017-02-19"'],
         ];
     }
 }
