@@ -30,7 +30,6 @@ use V8\IntegerValue;
 use V8\NullValue;
 use V8\NumberValue;
 use V8\ObjectValue;
-use V8\RegExpObject;
 use V8\StringValue;
 use V8\Value;
 
