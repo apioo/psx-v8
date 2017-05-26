@@ -1,4 +1,21 @@
 
+### 0.2.0
+
+* Update php-v8
+* Handle function object
+* Use ... for callback function arguments
+
+### 0.1.5
+
+* Fix tests
+* Handle toString method
+* Update php-v8
+
+### 0.1.4
+
+* Handle object types
+* Improve tests
+
 ### 0.1.3
 
 * Handle ArrayObject and JsonSerializable
