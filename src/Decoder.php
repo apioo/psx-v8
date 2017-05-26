@@ -25,6 +25,7 @@ use V8\BooleanObject;
 use V8\BooleanValue;
 use V8\Context;
 use V8\DateObject;
+use V8\FunctionObject;
 use V8\IntegerValue;
 use V8\NullValue;
 use V8\NumberObject;
@@ -33,6 +34,7 @@ use V8\ObjectValue;
 use V8\RegExpObject;
 use V8\StringObject;
 use V8\StringValue;
+use V8\UndefinedValue;
 use V8\Value;
 
 /**
@@ -57,10 +59,13 @@ class Decoder
             return $value->Value();
         } elseif ($value instanceof StringValue) {
             return $value->Value();
+        } elseif ($value instanceof IntegerValue) {
+            return $value->Value();
         } elseif ($value instanceof NumberValue) {
-            $val = $value->Value();
-            return strpos($val, '.') === false ? intval($val) : $val;
+            return $value->Value();
         } elseif ($value instanceof NullValue) {
+            return null;
+        } elseif ($value instanceof UndefinedValue) {
             return null;
         } elseif ($value instanceof DateObject) {
             return new \DateTime('@' . intval($value->ValueOf() / 1000));
@@ -79,6 +84,18 @@ class Decoder
                 $result[] = self::decode($value->Get($context, new IntegerValue($context->GetIsolate(), $i)), $context);
             }
             return $result;
+        } elseif ($value instanceof FunctionObject) {
+            return function(...$arguments) use ($value, $context){
+                $result = $value->Call(
+                    $context,
+                    Encoder::encode(new \stdClass(), $context),
+                    array_map(function($value) use ($context){
+                        return Encoder::encode($value, $context);
+                    }, $arguments)
+                );
+
+                return self::decode($result, $context);
+            };
         } elseif ($value instanceof ObjectValue) {
             $names  = $value->GetOwnPropertyNames($context);
             $result = new \stdClass();
