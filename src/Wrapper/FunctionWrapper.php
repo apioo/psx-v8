@@ -38,16 +38,28 @@ class FunctionWrapper extends ValueWrapper
      */
     protected $value;
 
+    /**
+     * @var mixed
+     */
+    protected $scope;
+
     public function __construct(Context $context, FunctionObject $value)
     {
         parent::__construct($context, $value);
+
+        $this->scope = new \stdClass();
     }
 
-    function __invoke(array $arguments = [], $scope = null)
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+    }
+
+    function __invoke(...$arguments)
     {
         $result = $this->value->Call(
             $this->context,
-            Encoder::encode($scope === null ? new \stdClass() : $scope, $this->context),
+            Encoder::encode($this->scope, $this->context),
             array_map(function($value){
                 return Encoder::encode($value, $this->context);
             }, $arguments)
