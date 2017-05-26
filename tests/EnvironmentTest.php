@@ -234,7 +234,7 @@ JS;
         $env->run($script);
 
         $callback = $env->get('callback');
-        $return   = $callback([$data]);
+        $return   = $callback($data);
 
         if ($return instanceof ValueWrapper) {
             $actual = json_encode($return->toNative(), JSON_PRETTY_PRINT);
