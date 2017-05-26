@@ -28,6 +28,7 @@ use PSX\V8\Tests\Data\ToString;
 use PSX\V8\Tests\Data\Traversable;
 use PSX\V8\Tests\Object\Foo;
 use PSX\V8\Wrapper\ArrayWrapper;
+use PSX\V8\Wrapper\FunctionWrapper;
 use PSX\V8\Wrapper\ObjectWrapper;
 use PSX\V8\Wrapper\ValueWrapper;
 
@@ -212,6 +213,7 @@ JSON;
             ['new Date(2017, 1, 9)', '2017-02-09', \DateTime::class, function(\DateTime $data) { return $data->format('Y-m-d'); } ],
             ['["foo", "bar"]', ['foo', 'bar'], ArrayWrapper::class, function(ArrayWrapper $data) { return $data->toNative(); } ],
             ['{foo: "bar"}', (object) ['foo' => 'bar'], ObjectWrapper::class, function(ObjectWrapper $data) { return $data->toNative(); } ],
+            ['function(bar){ return "foo" + bar; }', 'foobar', FunctionWrapper::class, function(FunctionWrapper $data) { return $data('bar'); } ],
         ];
     }
 
