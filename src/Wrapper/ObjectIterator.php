@@ -20,6 +20,7 @@
 
 namespace PSX\V8\Wrapper;
 
+use PSX\V8\Encoder;
 use V8\Context;
 use V8\ObjectValue;
 
@@ -62,7 +63,10 @@ class ObjectIterator extends ValueWrapper implements \Iterator
     {
         $return = $this->value->Get(
             $this->context,
-            $this->names->GetIndex($this->context, $this->pos)
+            $this->names->Get(
+                $this->context,
+                Encoder::encode($this->pos, $this->context)
+            )
         );
 
         return $this->wrapValue($return);
@@ -75,12 +79,20 @@ class ObjectIterator extends ValueWrapper implements \Iterator
 
     public function key()
     {
-        return $this->wrapValue($this->names->GetIndex($this->context, $this->pos));
+        return $this->wrapValue(
+            $this->names->Get(
+                $this->context,
+                Encoder::encode($this->pos, $this->context)
+            )
+        );
     }
 
     public function valid()
     {
-        return $this->names->HasIndex($this->context, $this->pos);
+        return $this->names->Has(
+            $this->context,
+            Encoder::encode($this->pos, $this->context)
+        );
     }
 
     public function rewind()

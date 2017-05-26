@@ -20,6 +20,7 @@
 
 namespace PSX\V8\Wrapper;
 
+use PSX\V8\Encoder;
 use V8\ArrayObject;
 use V8\Context;
 
@@ -55,7 +56,10 @@ class ArrayWrapper extends ValueWrapper implements \Iterator, \Countable
     public function current()
     {
         return $this->wrapValue(
-            $this->value->GetIndex($this->context, $this->pos)
+            $this->value->Get(
+                $this->context,
+                Encoder::encode($this->pos, $this->context)
+            )
         );
     }
 
@@ -71,7 +75,10 @@ class ArrayWrapper extends ValueWrapper implements \Iterator, \Countable
 
     public function valid()
     {
-        $this->value->HasIndex($this->context, $this->pos);
+        return $this->value->Has(
+            $this->context,
+            Encoder::encode($this->pos, $this->context)
+        );
     }
 
     public function rewind()

@@ -76,7 +76,7 @@ class ValueWrapper
     /**
      * Returns the PHP value from the V8 value
      *
-     * @return \stdClass
+     * @return mixed
      */
     public function toNative()
     {
