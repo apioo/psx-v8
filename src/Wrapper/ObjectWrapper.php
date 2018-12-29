@@ -45,7 +45,7 @@ class ObjectWrapper extends ValueWrapper implements \IteratorAggregate
 
     public function set($name, $value)
     {
-        return $this->value->Set(
+        return $this->value->set(
             $this->context,
             Encoder::encode($name, $this->context),
             Encoder::encode($value, $this->context)
@@ -54,7 +54,7 @@ class ObjectWrapper extends ValueWrapper implements \IteratorAggregate
 
     public function get($name)
     {
-        $return = $this->value->Get(
+        $return = $this->value->get(
             $this->context,
             Encoder::encode($name, $this->context)
         );
@@ -64,7 +64,7 @@ class ObjectWrapper extends ValueWrapper implements \IteratorAggregate
 
     public function has($name)
     {
-        return $this->value->Has(
+        return $this->value->has(
             $this->context, 
             Encoder::encode($name, $this->context)
         );
@@ -72,7 +72,7 @@ class ObjectWrapper extends ValueWrapper implements \IteratorAggregate
 
     public function delete($name)
     {
-        return $this->value->Delete(
+        return $this->value->delete(
             $this->context,
             Encoder::encode($name, $this->context)
         );

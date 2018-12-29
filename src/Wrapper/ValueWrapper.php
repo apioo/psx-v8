@@ -90,16 +90,16 @@ class ValueWrapper
         } elseif ($value instanceof FunctionObject) {
             return new FunctionWrapper($this->context, $value);
         } elseif ($value instanceof DateObject) {
-            return new \DateTime('@' . intval($value->ValueOf() / 1000));
+            return new \DateTime('@' . intval($value->valueOf() / 1000));
         } elseif ($value instanceof BooleanObject) {
-            return $value->ValueOf();
+            return $value->valueOf();
         } elseif ($value instanceof StringObject) {
-            return $value->ValueOf()->Value();
+            return $value->valueOf()->value();
         } elseif ($value instanceof NumberObject) {
-            $val = $value->ValueOf();
+            $val = $value->valueOf();
             return strpos($val, '.') === false ? intval($val) : $val;
         } elseif ($value instanceof RegExpObject) {
-            return $value->GetSource()->Value();
+            return $value->getSource()->value();
         } elseif ($value instanceof ObjectValue) {
             return new ObjectWrapper($this->context, $value);
         } else {

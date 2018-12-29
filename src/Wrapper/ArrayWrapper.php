@@ -50,13 +50,13 @@ class ArrayWrapper extends ValueWrapper implements \Iterator, \Countable
 
     public function count()
     {
-        return $this->value->Length();
+        return $this->value->length();
     }
 
     public function current()
     {
         return $this->wrapValue(
-            $this->value->Get(
+            $this->value->get(
                 $this->context,
                 Encoder::encode($this->pos, $this->context)
             )
@@ -75,7 +75,7 @@ class ArrayWrapper extends ValueWrapper implements \Iterator, \Countable
 
     public function valid()
     {
-        return $this->value->Has(
+        return $this->value->has(
             $this->context,
             Encoder::encode($this->pos, $this->context)
         );

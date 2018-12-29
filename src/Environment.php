@@ -46,18 +46,18 @@ class Environment extends ObjectWrapper
 
         parent::__construct(
             $this->context,
-            $this->context->GlobalObject()
+            $this->context->globalObject()
         );
     }
 
     public function setMemoryLimit($memoryLimit)
     {
-        $this->isolate->SetMemoryLimit($memoryLimit);
+        $this->isolate->setMemoryLimit($memoryLimit);
     }
 
     public function setTimeLimit($timeLimit)
     {
-        $this->isolate->SetTimeLimit($timeLimit);
+        $this->isolate->setTimeLimit($timeLimit);
     }
 
     public function run($script)
@@ -67,7 +67,7 @@ class Environment extends ObjectWrapper
         }
 
         $script = new Script($this->context, $script, new ScriptOrigin(__CLASS__));
-        $result = $script->Run($this->context);
+        $result = $script->run($this->context);
 
         return $this->wrapValue($result);
     }

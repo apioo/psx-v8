@@ -56,37 +56,37 @@ class Decoder
     public static function decode(Value $value, Context $context)
     {
         if ($value instanceof BooleanValue) {
-            return $value->Value();
+            return $value->value();
         } elseif ($value instanceof StringValue) {
-            return $value->Value();
+            return $value->value();
         } elseif ($value instanceof IntegerValue) {
-            return $value->Value();
+            return $value->value();
         } elseif ($value instanceof NumberValue) {
-            return $value->Value();
+            return $value->value();
         } elseif ($value instanceof NullValue) {
             return null;
         } elseif ($value instanceof UndefinedValue) {
             return null;
         } elseif ($value instanceof DateObject) {
-            return new \DateTime('@' . intval($value->ValueOf() / 1000));
+            return new \DateTime('@' . intval($value->valueOf() / 1000));
         } elseif ($value instanceof BooleanObject) {
-            return $value->ValueOf();
+            return $value->valueOf();
         } elseif ($value instanceof StringObject) {
-            return $value->ValueOf()->Value();
+            return $value->valueOf()->value();
         } elseif ($value instanceof NumberObject) {
-            $val = $value->ValueOf();
+            $val = $value->valueOf();
             return strpos($val, '.') === false ? intval($val) : $val;
         } elseif ($value instanceof RegExpObject) {
-            return $value->GetSource()->Value();
+            return $value->getSource()->value();
         } elseif ($value instanceof ArrayObject) {
             $result = [];
-            for ($i = 0; $i < $value->Length(); $i++) {
-                $result[] = self::decode($value->Get($context, new IntegerValue($context->GetIsolate(), $i)), $context);
+            for ($i = 0; $i < $value->length(); $i++) {
+                $result[] = self::decode($value->get($context, new IntegerValue($context->getIsolate(), $i)), $context);
             }
             return $result;
         } elseif ($value instanceof FunctionObject) {
             return function(...$arguments) use ($value, $context){
-                $result = $value->Call(
+                $result = $value->call(
                     $context,
                     Encoder::encode(new \stdClass(), $context),
                     array_map(function($value) use ($context){
@@ -97,14 +97,14 @@ class Decoder
                 return self::decode($result, $context);
             };
         } elseif ($value instanceof ObjectValue) {
-            $names  = $value->GetOwnPropertyNames($context);
+            $names  = $value->getOwnPropertyNames($context);
             $result = new \stdClass();
 
-            for ($i = 0; $i < $names->Length(); $i++) {
-                $name = $names->Get($context, new IntegerValue($context->GetIsolate(), $i));
+            for ($i = 0; $i < $names->length(); $i++) {
+                $name = $names->get($context, new IntegerValue($context->getIsolate(), $i));
                 if ($name instanceof StringValue) {
-                    $key = $name->Value();
-                    $val = $value->Get($context, $name);
+                    $key = $name->value();
+                    $val = $value->get($context, $name);
 
                     $result->$key = self::decode($val, $context);
                 }

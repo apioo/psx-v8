@@ -53,17 +53,17 @@ class ObjectIterator extends ValueWrapper implements \Iterator
         parent::__construct($context, $value);
 
         if ($ownProperties) {
-            $this->names = $value->GetOwnPropertyNames($context);
+            $this->names = $value->getOwnPropertyNames($context);
         } else {
-            $this->names = $value->GetPropertyNames($context);
+            $this->names = $value->getPropertyNames($context);
         }
     }
 
     public function current()
     {
-        $return = $this->value->Get(
+        $return = $this->value->get(
             $this->context,
-            $this->names->Get(
+            $this->names->get(
                 $this->context,
                 Encoder::encode($this->pos, $this->context)
             )
@@ -80,7 +80,7 @@ class ObjectIterator extends ValueWrapper implements \Iterator
     public function key()
     {
         return $this->wrapValue(
-            $this->names->Get(
+            $this->names->get(
                 $this->context,
                 Encoder::encode($this->pos, $this->context)
             )
@@ -89,7 +89,7 @@ class ObjectIterator extends ValueWrapper implements \Iterator
 
     public function valid()
     {
-        return $this->names->Has(
+        return $this->names->has(
             $this->context,
             Encoder::encode($this->pos, $this->context)
         );

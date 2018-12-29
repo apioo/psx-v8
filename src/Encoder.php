@@ -52,30 +52,30 @@ class Encoder
     public static function encode($value, Context $context)
     {
         if (is_bool($value)) {
-            return new BooleanValue($context->GetIsolate(), $value);
+            return new BooleanValue($context->getIsolate(), $value);
         } elseif (is_string($value)) {
-            return new StringValue($context->GetIsolate(), $value);
+            return new StringValue($context->getIsolate(), $value);
         } elseif (is_float($value)) {
-            return new NumberValue($context->GetIsolate(), $value);
+            return new NumberValue($context->getIsolate(), $value);
         } elseif (is_int($value)) {
-            return new IntegerValue($context->GetIsolate(), $value);
+            return new IntegerValue($context->getIsolate(), $value);
         } elseif ($value === null) {
-            return new NullValue($context->GetIsolate());
+            return new NullValue($context->getIsolate());
         } elseif ($value instanceof \DateTime) {
             return new DateObject($context, $value->getTimestamp() * 1000);
         } elseif ($value instanceof ObjectInterface) {
             return self::encode($value->getProperties(), $context);
         } elseif ($value instanceof \Closure || is_callable($value)) {
             return new FunctionObject($context, function(FunctionCallbackInfo $info) use ($value){
-                $args   = $info->Arguments();
+                $args   = $info->arguments();
                 $params = [];
                 foreach ($args as $arg) {
-                    $params[] = Decoder::decode($arg, $info->GetContext());
+                    $params[] = Decoder::decode($arg, $info->getContext());
                 }
 
                 $return = call_user_func_array($value, $params);
 
-                $info->GetReturnValue()->Set(self::encode($return, $info->GetContext()));
+                $info->GetReturnValue()->set(self::encode($return, $info->getContext()));
             });
         } elseif ($value instanceof \ArrayObject) {
             return self::encode($value->getArrayCopy(), $context);
@@ -86,7 +86,7 @@ class Encoder
         } elseif ($value instanceof \stdClass || (is_array($value) && self::isAssoc($value))) {
             $object = new ObjectValue($context);
             foreach ($value as $key => $val) {
-                $object->Set(
+                $object->set(
                     $context,
                     self::encode($key, $context),
                     self::encode($val, $context)
@@ -97,7 +97,7 @@ class Encoder
             $array = new ArrayObject($context);
             $index = 0;
             foreach ($value as $val) {
-                $array->Set(
+                $array->set(
                     $context,
                     self::encode($index, $context),
                     self::encode($val, $context)
@@ -106,9 +106,9 @@ class Encoder
             }
             return $array;
         } elseif (is_object($value) && method_exists($value, '__toString')) {
-            return new StringValue($context->GetIsolate(), $value->__toString());
+            return new StringValue($context->getIsolate(), $value->__toString());
         } else {
-            return new NullValue($context->GetIsolate());
+            return new NullValue($context->getIsolate());
         }
     }
 

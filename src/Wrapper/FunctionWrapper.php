@@ -57,7 +57,7 @@ class FunctionWrapper extends ValueWrapper
 
     function __invoke(...$arguments)
     {
-        $result = $this->value->Call(
+        $result = $this->value->call(
             $this->context,
             Encoder::encode($this->scope, $this->context),
             array_map(function($value){
