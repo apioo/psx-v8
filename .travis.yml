@@ -14,8 +14,8 @@ before_install:
   - cd php-v8
   - git checkout tags/v${PHP_V8}
   - phpize && ./configure && make
-  - if [[ "$TRAVIS_PHP_VERSION" == "7.0" ]]; then cp modules/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20151012/v8.so; fi;
   - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then cp modules/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20160303/v8.so; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" == "7.2" ]]; then cp modules/v8.so /home/travis/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-20170718/v8.so; fi;
   - cd ..
   - echo "extension=v8.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 install:
