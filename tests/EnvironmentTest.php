@@ -20,6 +20,7 @@
 
 namespace PSX\V8\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\V8\Environment;
 use PSX\V8\Object\ReflectionObject;
 use PSX\V8\Tests\Data\Json;
@@ -39,7 +40,7 @@ use PSX\V8\Wrapper\ValueWrapper;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class EnvironmentTest extends \PHPUnit_Framework_TestCase
+class EnvironmentTest extends TestCase
 {
     protected function setUp()
     {

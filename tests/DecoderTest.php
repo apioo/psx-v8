@@ -20,6 +20,7 @@
 
 namespace PSX\V8\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\V8\Decoder;
 use V8\ArrayObject;
 use V8\BooleanObject;
@@ -43,7 +44,7 @@ use V8\StringValue;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class DecoderTest extends \PHPUnit_Framework_TestCase
+class DecoderTest extends TestCase
 {
     protected function setUp()
     {

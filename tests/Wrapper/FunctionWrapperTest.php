@@ -20,11 +20,9 @@
 
 namespace PSX\V8\Tests\Wrapper;
 
-use PSX\Framework\Dependency\ObjectBuilder;
+use PHPUnit\Framework\TestCase;
 use PSX\V8\Environment;
-use PSX\V8\Wrapper\ArrayWrapper;
 use PSX\V8\Wrapper\FunctionWrapper;
-use PSX\V8\Wrapper\ObjectWrapper;
 
 /**
  * FunctionWrapperTest
@@ -33,7 +31,7 @@ use PSX\V8\Wrapper\ObjectWrapper;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class FunctionWrapperTest extends \PHPUnit_Framework_TestCase
+class FunctionWrapperTest extends TestCase
 {
     protected function setUp()
     {

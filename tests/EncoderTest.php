@@ -20,6 +20,7 @@
 
 namespace PSX\V8\Tests;
 
+use PHPUnit\Framework\TestCase;
 use PSX\V8\Encoder;
 use PSX\V8\Tests\Data\Json;
 use PSX\V8\Tests\Data\Popo;
@@ -45,7 +46,7 @@ use V8\StringValue;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class EncoderTest extends \PHPUnit_Framework_TestCase
+class EncoderTest extends TestCase
 {
     protected function setUp()
     {

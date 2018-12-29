@@ -20,6 +20,7 @@
 
 namespace PSX\V8\Tests\Object;
 
+use PHPUnit\Framework\TestCase;
 use PSX\V8\Encoder;
 use PSX\V8\Object\ReflectionObject;
 use V8\Context;
@@ -35,7 +36,7 @@ use V8\StringValue;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ReflectionObjectTest extends \PHPUnit_Framework_TestCase
+class ReflectionObjectTest extends TestCase
 {
     public function testGetProperties()
     {

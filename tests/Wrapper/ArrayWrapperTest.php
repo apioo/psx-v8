@@ -20,6 +20,7 @@
 
 namespace PSX\V8\Tests\Wrapper;
 
+use PHPUnit\Framework\TestCase;
 use PSX\V8\Environment;
 use PSX\V8\Wrapper\ArrayWrapper;
 
@@ -30,7 +31,7 @@ use PSX\V8\Wrapper\ArrayWrapper;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    http://phpsx.org
  */
-class ArrayWrapperTest extends \PHPUnit_Framework_TestCase
+class ArrayWrapperTest extends TestCase
 {
     protected function setUp()
     {
