@@ -75,7 +75,7 @@ class Encoder
 
                 $return = call_user_func_array($value, $params);
 
-                $info->GetReturnValue()->set(self::encode($return, $info->getContext()));
+                $info->getReturnValue()->set(self::encode($return, $info->getContext()));
             });
         } elseif ($value instanceof \ArrayObject) {
             return self::encode($value->getArrayCopy(), $context);
